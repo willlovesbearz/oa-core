@@ -17,10 +17,10 @@ def open_root():
   play('beep_open.wav')
   mind('root')
 
-@command(["list commands", "help"])
-def list_commands():
-    say('The currently available voice commands are..')
-    [say(cmd) for cmd in kws.keys()]
+#@command(["list commands", "help"])
+#def list_commands():
+#    say('The currently available voice commands are..')
+#    [say(cmd) for cmd in kws.keys()]
 
 @command("stop listening")
 def do_exit():

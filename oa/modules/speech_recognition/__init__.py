@@ -16,6 +16,7 @@ from oa.modules.abilities.system import download_file, write_file, stat_mtime
 
 _decoders = {}
 
+
 def config_stt(cache_dir, keywords, kws_last_modification_time_in_sec = None):
     _ = oa.legacy.Core()
     cache_path = lambda x: os.path.join(cache_dir, x)
@@ -114,6 +115,7 @@ def get_decoder():
         return _decoders[mind.name]
 
     return ret
+
 
 def _in(ctx):
     mute = 0

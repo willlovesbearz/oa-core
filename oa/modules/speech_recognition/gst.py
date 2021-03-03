@@ -9,6 +9,8 @@ Gst.init(None)
 
 
 _logger.debug("Loading")
+
+
 class Recognizer(GObject.GObject):
     __gsignals__ = {
         'finished' : (GObject.SIGNAL_RUN_LAST, GObject.TYPE_NONE,

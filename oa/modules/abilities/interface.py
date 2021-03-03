@@ -1,51 +1,27 @@
 import oa.legacy
-
+import dbus
+import re
 from oa.modules.abilities.core import info, put
 from oa.modules.abilities.interact import say
 from oa.modules.abilities.system import find_file, sys_exec
 
-def activate(s):
-    """ Activate a specific window. """
-    if oa.legacy.sys.os == 'win':
-        w = WindowMgr()
-        w.find_window_wildcard('.*' + s + '.*')
-        w.set_foreground()
-    else:
-        raise Exception('`Activate` is unsupported.')
+session_bus = dbus.SessionBus()
 
-def close(s):
-    """ Close an application by a window or process name.
-        A partial window name will work, for example: 'note*'. """
-    say('- Unable to close %s for now.' %s)
-    pass
 
-def volume(move = 2):
+# TODO: make volume control work
+def volume(move=2):
     """ Change volume level.
         Positive `move`: Volume Up
         Negative `move`: Volume Down 
     """
-    if oa.sys.os == 'win':
-        # Up by 2.
-        if move > 0:
-            # Volume up.
-            key = chr(175)
-        else:
-            move =- move
-            key = chr(174)
-
-        while move > 0:
-            wshell.SendKeys(key)
-            move -= 2
-
-    elif oa.sys.os in ('linux','mac'):
-        if move > 0:
-            sys_exec('pamixer --increase %d' %move)
-        else:
-            sys_exec('pamixer --decrease %d' %(-move))
+    if move > 0:
+        sys_exec('amixer set Master' % move)
     else:
-        info('Unknown operating system.')
+        sys_exec('amixer set Master' % (-move))
 
-def mute(mute = True):
+
+# unmute does not work correctly
+def mute(mute=True):
     """ Mute or unmute speakers. """
     if oa.legacy.sys.os == 'win':
         wshell.SendKeys(chr(173))
@@ -54,6 +30,32 @@ def mute(mute = True):
     else:
         info('Unknown operating system.')
 
+
 def unmute():
     """ Unmute speakers. """
     mute(False)
+
+
+def get_mpris():
+    for service in session_bus.list_names():
+        if re.match('org.mpris.MediaPlayer2.', service):
+            return service
+
+
+# Media control via MPRIS2 on dbus
+def media_next():
+    print(get_mpris())
+    player = dbus.SessionBus().get_object('org.mpris.MediaPlayer2.Lollypop', '/org/mpris/MediaPlayer2')
+    player.Next(dbus_interface='org.mpris.MediaPlayer2.Player')
+
+
+def media_prev():
+    print(get_mpris())
+    player = dbus.SessionBus().get_object('org.mpris.MediaPlayer2.Lollypop', '/org/mpris/MediaPlayer2')
+    player.Previous(dbus_interface='org.mpris.MediaPlayer2.Player')
+
+
+def media_playpause():
+    print(get_mpris())
+    player = dbus.SessionBus().get_object('org.mpris.MediaPlayer2.Lollypop', '/org/mpris/MediaPlayer2')
+    player.PlayPause(dbus_interface='org.mpris.MediaPlayer2.Player')

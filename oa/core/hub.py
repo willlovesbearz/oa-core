@@ -1,6 +1,7 @@
 # Need something to act as 'core'
 
 import logging
+
 _logger = logging.getLogger(__name__)
 
 import os
@@ -8,16 +9,16 @@ import threading
 
 from . import util
 
+
 class Hub:
     def __init__(self, config=None):
         self.config = config
 
         self.ready = threading.Event()
         self.finished = threading.Event()
-        
+
         self.thread_pool = []
         self.parts = {}
-
 
     def run(self):
         self.finished.clear()
@@ -25,12 +26,10 @@ class Hub:
         self._start_modules()
         self.ready.set()
 
-
     def put(self, part, value):
         """ Put a message on the wire. """
         if part in self.parts:
             self.parts[part].wire_in.put(value)
-
 
     def _load_modules(self):
         """ Setup all parts. """
@@ -47,10 +46,9 @@ class Hub:
                     except Exception as ex:
                         _logger.error("Error loading {}: {}".format(module_name, ex))
 
-
     def _start_modules(self):
         # Setup input threads.
-        b = threading.Barrier(len(self.parts)+1)
+        b = threading.Barrier(len(self.parts) + 1)
 
         for module_name in self.parts:
             m = self.parts[module_name]
@@ -65,17 +63,16 @@ class Hub:
 def thread_loop(hub, part, b):
     """ Setup part inputs to the message wire. """
     # if not isinstance(part.output, list):
-        # raise Exception('No output list defined: ' + part.name)
+    # raise Exception('No output list defined: ' + part.name)
 
     _logger.debug('Starting')
     # ready = threading.Event()
 
-    
     if hasattr(part, 'init'):
         part.init()
 
     b.wait()
-    
+
     hub.ready.wait()
 
     while not hub.finished.is_set():
@@ -86,6 +83,5 @@ def thread_loop(hub, part, b):
                     listener.wire_in.put(msg)
         except Exception as ex:
             _logger.error("Error processing queue: {}".format(ex))
-
 
     _logger.debug('Stopped')

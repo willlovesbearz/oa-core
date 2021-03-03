@@ -3,11 +3,12 @@ from oa.core.util import command_registry
 from oa.modules.abilities.interact import say, play, mind
 from oa.modules.abilities.other import read_news_feed, diagnostics, read_forecast
 from oa.modules.abilities.other import say_day, say_last_command, say_time
+from oa.modules.abilities.interface import volume, mute, unmute, media_next, media_prev, media_playpause
 
 kws = {}
 
 command = command_registry(kws)
-
+#todo: add application launcher
 @command("root mind")
 def hello_world():
     say('- Hello world!')
@@ -48,3 +49,30 @@ def what_weather():
 @command("what time is it")
 def what_time():
     say_time()
+
+@command("sudo make me a sandwich")
+def sandwich_sudo():
+    say("ok, poof!, you're a sandwich")
+
+@command(["volume up", "increase volume", "turn it up"])
+def vol_up():
+    volume(5)
+
+@command(["volume down", "decrease volume", "turn it down"])
+def vol_down():
+    volume(-5)
+
+
+@command(["next song", "skip song"])
+def m_next():
+    media_next()
+
+
+@command("previous song")
+def m_prev():
+    media_prev()
+
+@command(["play", "pause", "play song", "pause song"])
+def m_playpause():
+    media_playpause()
+
