@@ -3,7 +3,7 @@ from oa.core.util import command_registry
 from oa.modules.abilities.interact import say, play, mind
 from oa.modules.abilities.other import read_news_feed, diagnostics, read_forecast
 from oa.modules.abilities.other import say_day, say_last_command, say_time
-from oa.modules.abilities.interface import volume, mute, unmute, media_next, media_prev, media_playpause
+from oa.modules.abilities.interface import volume, mute, unmute, media_next, media_prev, media_play, media_pause
 
 kws = {}
 
@@ -72,7 +72,10 @@ def m_next():
 def m_prev():
     media_prev()
 
-@command(["play", "pause", "play song", "pause song"])
-def m_playpause():
-    media_playpause()
+@command(["play", "play song"])
+def m_play():
+    media_play()
 
+@command(["pause", "pause song"])
+def m_pause():
+    media_pause()

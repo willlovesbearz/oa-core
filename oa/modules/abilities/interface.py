@@ -44,18 +44,20 @@ def get_mpris():
 
 # Media control via MPRIS2 on dbus
 def media_next():
-    print(get_mpris())
-    player = dbus.SessionBus().get_object('org.mpris.MediaPlayer2.Lollypop', '/org/mpris/MediaPlayer2')
+    player = dbus.SessionBus().get_object(get_mpris(), '/org/mpris/MediaPlayer2')
     player.Next(dbus_interface='org.mpris.MediaPlayer2.Player')
 
 
 def media_prev():
-    print(get_mpris())
-    player = dbus.SessionBus().get_object('org.mpris.MediaPlayer2.Lollypop', '/org/mpris/MediaPlayer2')
+    player = dbus.SessionBus().get_object(get_mpris(), '/org/mpris/MediaPlayer2')
     player.Previous(dbus_interface='org.mpris.MediaPlayer2.Player')
 
 
-def media_playpause():
-    print(get_mpris())
-    player = dbus.SessionBus().get_object('org.mpris.MediaPlayer2.Lollypop', '/org/mpris/MediaPlayer2')
-    player.PlayPause(dbus_interface='org.mpris.MediaPlayer2.Player')
+def media_play():
+    player = dbus.SessionBus().get_object(get_mpris(), '/org/mpris/MediaPlayer2')
+    player.Play(dbus_interface='org.mpris.MediaPlayer2.Player')
+
+
+def media_pause():
+    player = dbus.SessionBus().get_object(get_mpris(), '/org/mpris/MediaPlayer2')
+    player.Pause(dbus_interface='org.mpris.MediaPlayer2.Player')
