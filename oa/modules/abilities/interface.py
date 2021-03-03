@@ -61,3 +61,7 @@ def media_play():
 def media_pause():
     player = dbus.SessionBus().get_object(get_mpris(), '/org/mpris/MediaPlayer2')
     player.Pause(dbus_interface='org.mpris.MediaPlayer2.Player')
+
+def media_getmetadata():
+    player = dbus.SessionBus().get_object(get_mpris(), '/org/mpris/MediaPlayer2')
+    return player.Get('org.mpris.MediaPlayer2.Player', 'Metadata', dbus_interface='org.freedesktop.DBus.Properties')
