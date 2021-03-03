@@ -9,56 +9,70 @@ kws = {}
 
 command = command_registry(kws)
 #todo: add application launcher
+
+
 @command("root mind")
 def hello_world():
     say('- Hello world!')
+
 
 @command("close assistant")
 def close_assistant():
     play('beep_close.wav')
     mind('boot')
 
+
 @command(["list commands", "what can i say"])
 def list_commands():
     say('- The currently available voice commands are:\n{}'.format(',\n'.join(kws.keys())))
+
 
 @command("read world news")
 def read_world_news():
     read_news_feed('https://www.reddit.com/r/worldnews/.rss', 'world')
 
+
 @command("run diagnostics")
 def run_diagnostics():
     diagnostics()
+
 
 @command("sing a song")
 def sing_a_song():
     play('daisy.wav')
 
+
 @command("what day is it")
 def what_day():
     say_day()
+
 
 @command("what did I say")
 def what_command():
     say_last_command('You just said:')
 
+
 @command("what is the weather")
 def what_weather():
     read_forecast()
+
 
 @command("what time is it")
 def what_time():
     say_time()
 
+
 @command("sudo make me a sandwich")
 def sandwich_sudo():
     say("ok, poof!, you're a sandwich")
 
-@command(["volume up", "increase volume", "turn it up"])
+
+@command(["volume up", "increase volume"])
 def vol_up():
     volume(5)
 
-@command(["volume down", "decrease volume", "turn it down"])
+
+@command(["volume down", "decrease volume"])
 def vol_down():
     volume(-5)
 
@@ -94,7 +108,7 @@ def m_pause():
         say("no media players detected")
 
 
-@command(["what is this song", "what is playing"])
+@command(["what is the song", "what is playing"])
 def m_info():
     try:
         meta = media_getmetadata()
